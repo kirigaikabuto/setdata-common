@@ -27,3 +27,14 @@ func NewMiddleError(err error, statusCode, unique int) MiddleError {
 		}
 	}
 }
+
+func ErrToHttResponse(err error) MiddleError {
+	var result MiddleError
+	switch err.(type) {
+	case MiddleError:
+		result = err.(MiddleError)
+	default:
+		result = NewMiddleError(err, 500, 500)
+	}
+	return result
+}
