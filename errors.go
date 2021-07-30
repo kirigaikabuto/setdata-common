@@ -1,5 +1,10 @@
 package setdata_common
 
+import (
+	"encoding/json"
+	"github.com/djumanoff/amqp"
+)
+
 type MiddleError struct {
 	Code         int
 	Err          error
@@ -37,4 +42,10 @@ func ErrToHttResponse(err error) MiddleError {
 		result = NewMiddleError(err, 500, 500)
 	}
 	return result
+}
+
+func ErrToAmqpResponse(err error) *amqp.Message {
+	se := ErrToHttResponse(err)
+	data, _ := json.Marshal(se)
+	return &amqp.Message{Body: data}
 }
