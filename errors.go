@@ -33,7 +33,7 @@ func NewMiddleError(err error, statusCode, unique int) MiddleError {
 	}
 }
 
-func ErrToHttResponse(err error) MiddleError {
+func ErrToHttpResponse(err error) MiddleError {
 	var result MiddleError
 	switch err.(type) {
 	case MiddleError:
@@ -45,7 +45,7 @@ func ErrToHttResponse(err error) MiddleError {
 }
 
 func ErrToAmqpResponse(err error) *amqp.Message {
-	se := ErrToHttResponse(err)
+	se := ErrToHttpResponse(err)
 	data, _ := json.Marshal(se)
 	return &amqp.Message{Body: data}
 }
