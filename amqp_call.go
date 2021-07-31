@@ -2,7 +2,6 @@ package setdata_common
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/djumanoff/amqp"
 	"strings"
 )
@@ -16,7 +15,6 @@ func AmqpCall(clt amqp.Client, endpoint string, request interface{}, response in
 	if err != nil {
 		return err
 	}
-	fmt.Println(responseData.Body)
 	if string(responseData.Body) != "null" {
 		middleError := &MiddleError{}
 		err = json.Unmarshal(responseData.Body, &middleError)
