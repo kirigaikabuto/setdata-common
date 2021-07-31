@@ -23,9 +23,11 @@ func AmqpCall(clt amqp.Client, endpoint string, request interface{}, response in
 	if middleError.Code != 0 && middleError.Message != "" {
 		return middleError
 	}
-	err = json.Unmarshal(responseData.Body, &response)
-	if err != nil {
-		return err
+	if responseData.Body != nil {
+		err = json.Unmarshal(responseData.Body, &response)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
