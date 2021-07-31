@@ -8,18 +8,18 @@ import (
 
 var (
 	ErrCurrentAclResourceNotExist = NewMiddleError(errors.New("current acl resource not exist"), 404, 100)
-	ErrCurrentAclActionNotExist = NewMiddleError(errors.New("current acl action not exist"), 404, 101)
+	ErrCurrentAclActionNotExist   = NewMiddleError(errors.New("current acl action not exist"), 404, 101)
 )
 
 type MiddleError struct {
 	Code         int
-	Err          error
+	Message      string
 	AddInfo      interface{} `json:"add_info,omitempty"`
 	UniqueNumber int
 }
 
 func (se MiddleError) Error() string {
-	return se.Err.Error()
+	return se.Message
 }
 
 func (se MiddleError) Status() int {
@@ -33,7 +33,7 @@ func NewMiddleError(err error, statusCode, unique int) MiddleError {
 	default:
 		return MiddleError{
 			Code:         statusCode,
-			Err:          err,
+			Message:      err.Error(),
 			UniqueNumber: unique,
 		}
 	}
