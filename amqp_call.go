@@ -17,7 +17,7 @@ func AmqpCall(clt amqp.Client, endpoint string, request interface{}, response in
 		return err
 	}
 	fmt.Println(responseData.Body)
-	if len(responseData.Body) != 0 {
+	if string(responseData.Body) != "null" {
 		middleError := &MiddleError{}
 		err = json.Unmarshal(responseData.Body, &middleError)
 		if err != nil && !strings.Contains(err.Error(), "json: cannot unmarshal array") {
