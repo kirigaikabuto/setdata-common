@@ -29,7 +29,7 @@ func GetAclAction(action string) (AclAction, error) {
 	return val, nil
 }
 
-func GetAclActiomString(action AclAction) (string, error) {
+func GetAclActionString(action AclAction) (string, error) {
 	val, ok := aclActionToString[action]
 	if !ok {
 		return "", ErrCurrentAclActionNotExist
