@@ -2,9 +2,7 @@ package setdata_common
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/djumanoff/amqp"
-	"reflect"
 )
 
 func AmqpCall(clt amqp.Client, endpoint string, request interface{}, response interface{}) error {
@@ -16,16 +14,17 @@ func AmqpCall(clt amqp.Client, endpoint string, request interface{}, response in
 	if err != nil {
 		return err
 	}
+	middleError := &MiddleError{}
+	err = json.Unmarshal(responseData.Body, &middleError)
+	if err != nil {
+		return err
+	}
+	if middleError.Code != 0 && middleError.Message != "" {
+		return middleError
+	}
 	err = json.Unmarshal(responseData.Body, &response)
 	if err != nil {
 		return err
 	}
-	fmt.Println(response)
-	fmt.Println(reflect.TypeOf(response))
-	switch response.(type) {
-	case MiddleError:
-		return response.(MiddleError)
-	default:
-		return nil
-	}
+	return nil
 }
