@@ -3,6 +3,7 @@ package setdata_common
 import (
 	"encoding/json"
 	"github.com/djumanoff/amqp"
+	"strings"
 )
 
 func AmqpCall(clt amqp.Client, endpoint string, request interface{}, response interface{}) error {
@@ -16,7 +17,7 @@ func AmqpCall(clt amqp.Client, endpoint string, request interface{}, response in
 	}
 	middleError := &MiddleError{}
 	err = json.Unmarshal(responseData.Body, &middleError)
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "json: cannot unmarshal array") {
 		return err
 	}
 	if middleError.Code != 0 && middleError.Message != "" {
