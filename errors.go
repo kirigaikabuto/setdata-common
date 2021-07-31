@@ -2,7 +2,13 @@ package setdata_common
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/djumanoff/amqp"
+)
+
+var (
+	ErrCurrentAclResourceNotExist = NewMiddleError(errors.New("current acl resource not exist"), 404, 100)
+	ErrCurrentAclActionNotExist = NewMiddleError(errors.New("current acl action not exist"), 404, 101)
 )
 
 type MiddleError struct {
